@@ -9,12 +9,12 @@ class SensorManagerGPIO(SensorManager):
 
     def setup(self, sensorConfig):
         super().checkSensorConfig(sensorConfig)
-        
+
         # Pin GPIO per il sensore STC013
         GPIO.setmode(GPIO.BCM)
 
         for sConfig in sensorConfig:
-            GPIO.setup(sConfig.sensorPin, GPIO.IN)
+            GPIO.setup(sConfig['sensor-pin'], GPIO.IN)
 
     def readCurrent(self, sensor_gain):
         # Leggi il valore dal sensore (ADC)
