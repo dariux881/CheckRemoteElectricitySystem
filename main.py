@@ -22,6 +22,7 @@ ac_ok_time_wait = config.getint('Device', 'device-time-sleep-seconds-current-ok'
 ac_ko_time_wait = config.getint('Device', 'device-time-sleep-seconds-current-ko')
 
 sensorManager = SensorManagerMock()
+#TODO make communication manager more configurable based on connection type
 commManager = CommunicationManager()
 
 def main():
@@ -44,6 +45,9 @@ def main():
 
             powerStatus &= singleStatus
 
+        #TODO notify on device that system is properly working or not due to config errors
+
+        #TODO handle errors from sendData
         commManager.sendData(totalResult, DEVICE_ID, API_KEY, SERVER_URL)
 
         if powerStatus:
