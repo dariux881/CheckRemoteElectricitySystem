@@ -1,3 +1,4 @@
+import globals
 import SensorManager
 import Adafruit_ADS1x15
 import RPi.GPIO as GPIO
@@ -14,7 +15,7 @@ class SensorManagerGPIO(SensorManager):
         GPIO.setmode(GPIO.BCM)
 
         for sConfig in sensorConfig:
-            GPIO.setup(sConfig['sensor-pin'], GPIO.IN)
+            GPIO.setup(sConfig[globals.pin_key], GPIO.IN)
 
     def readCurrent(self, sensor_gain):
         # Leggi il valore dal sensore (ADC)
