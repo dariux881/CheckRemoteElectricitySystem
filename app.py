@@ -3,27 +3,15 @@ import configparser
 import globals
 import json
 import logging
+import logging.config
 from SensorManager import SensorManager
 import time
-
-logger = logging.getLogger(__name__)
 
 # Create a ConfigParser object
 config = configparser.ConfigParser()
 
 # Read the configuration file
 config.read('config.ini')
-
-# Getting logging parameters
-log_filename = config.get(globals.default_section_key, globals.log_filename, fallback='powerChecker.log')
-log_level_from_config = config.get(globals.default_section_key, globals.log_level, fallback='logging.INFO')
-
-log_level_info = {'logging.DEBUG': logging.DEBUG,
-                  'logging.INFO': logging.INFO,
-                  'logging.WARNING': logging.WARNING,
-                  'logging.ERROR': logging.ERROR,
-                  }
-log_level = log_level_info.get(log_level_from_config, logging.ERROR)
 
 # Getting the sensors configuration
 sensors_config = json.loads(config.get(globals.sensor_section_key, globals.sensor_config_key))
@@ -38,7 +26,8 @@ ac_ko_time_wait = config.getint(globals.device_section_key, globals.time_sleep_s
 
 
 def main():
-    logging.basicConfig(filename=log_filename, level=log_level)
+    logging.config.fileConfig('logging.conf')
+    logger = logging.getLogger(__name__)
 
     sensor_manager = SensorManager()
     # TODO make communication manager more configurable based on connection type

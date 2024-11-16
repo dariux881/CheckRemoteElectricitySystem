@@ -6,6 +6,8 @@ import RPi.GPIO as GPIO
 
 class AmperometerSensor(Sensor):
     def __init__(self):
+        super().__init__()
+
         # Configura il sensore ADC (se usi STC013 con ADC)
         self.adc = Adafruit_ADS1x15.ADS1115()
         self.gain = 0
@@ -45,7 +47,7 @@ class AmperometerSensor(Sensor):
 
     def check_power(self):
         # Controlla se la corrente è presente
-        current_value = self.read_current(self, self.gain)
+        current_value = self.read_current(self.gain)
         if current_value > self.threshold:
             return True  # Corrente presente
         else:

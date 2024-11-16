@@ -1,22 +1,23 @@
 import globals
 import logging
+import logging.config
 from Sensors.SensorFactory import SensorFactory
 
-logger = logging.getLogger(__name__)
 supported_sensor_types = ['amperometer', 'mock']
 
 
 class SensorManager:
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.sensorMap = dict()
 
     def setup(self, sensors_config):
-        logger.info('setting up sensors')
+        self.logger.info('setting up sensors')
 
         try:
             self.check_sensor_config(sensors_config)
         except Exception as e:
-            logger.exception(e)
+            self.logger.exception(e)
             raise e
 
         s_factory = SensorFactory()
@@ -27,6 +28,7 @@ class SensorManager:
             sensor = s_factory.create(sensor_type, sConfig)
 
             if sensor is None:
+                self.logger.error('invalid sensor. Not created')
                 raise Exception(
                     'failed in creating sensor ' + sensor_type + ' for id ' + sConfig.get(globals.sensor_id_key))
 
@@ -54,17 +56,15 @@ class SensorManager:
 
             found_circuits.append(circuit)
 
-            pin = sConfig.get(globals.pin_key)
-            if pin is not None and pin in found_pins:
-                raise Exception('pin ' + pin + ' is already defined')
+            sensor_type = sConfig.get(globals.sensor_type_key)
+            if sensor_type not in supported_sensor_types:
+                raise Exception('sensor type ' + sensor_type + ' is not supported')
 
-            found_pins.append(pin)
+            sensor_id = sConfig.get(globals.sensor_id_key)
+            if sensor_id in found_ids:
+                raise Exception('id ' + sensor_id + ' is already defined')
 
-            id = sConfig.get(globals.sensor_id_key)
-            if id in found_ids:
-                raise Exception('id ' + id + ' is already defined')
-
-            found_ids.append(id)
+            found_ids.append(sensor_id)
 
     def check_power(self, sensor_id):
         if sensor_id not in self.sensorMap:
