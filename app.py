@@ -14,10 +14,13 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # Getting the sensors configuration
-sensors_config = json.loads(config.get(globals.sensor_section_key, globals.sensor_config_key))
+sensors_config = json.loads(config.get(globals.device_section_key, globals.sensor_config_key))
 
 # Getting the remote server parameters
 SERVER_URL = config.get(globals.remote_section_key, globals.remote_send_status_url_key)
+SERVER_LOGIN_URL = config.get(globals.remote_section_key, globals.remote_login_url_key)
+USERNAME = config.get(globals.remote_section_key, globals.username_key)
+PASSWORD = config.get(globals.remote_section_key, globals.password_key)
 API_KEY = config.get(globals.remote_section_key, globals.api_key_key)
 DEVICE_ID = config.get(globals.device_section_key, globals.device_id_key)
 
@@ -40,6 +43,12 @@ def main():
         logger.exception(e)
         return
 
+    try:
+        comm_manager.login(USERNAME, PASSWORD, SERVER_LOGIN_URL)
+    except Exception as e:
+        logger.exception(e)
+        return
+
     while True:
         # iterate on all the configured sensors. If at least one fails, wait ac_ko_time_wait
         power_status = True
@@ -54,7 +63,7 @@ def main():
             else:
                 logger.warning("Power KO for sensor " + sensor.id)
 
-            single_result = {globals.circuit_result_key: sensor.circuit, globals.status_result_key: single_status}
+            single_result = {globals.sensor_result_key: sensor.id, globals.status_result_key: single_status}
             total_result.append(single_result)
 
             power_status &= single_status
