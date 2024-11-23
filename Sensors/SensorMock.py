@@ -4,7 +4,6 @@ from random import randrange
 from Sensors.Sensor import Sensor
 
 
-
 class SensorMock(Sensor):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -29,5 +28,27 @@ class SensorMock(Sensor):
         self.logger.debug('setup completed')
         return True
 
-    def check_power(self):
-        return randrange(2*self.threshold) > self.threshold
+    def get_value(self):
+        return randrange(2 * self.threshold) > self.threshold
+
+
+class SensorMockNumber(Sensor):
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        super().__init__()
+
+    def check_sensor_config(self, sensor_config):
+        return super().check_sensor_config(sensor_config)
+
+    def setup(self, sensor_config):
+        if not self.check_sensor_config(sensor_config):
+            self.logger.error('setup failed')
+            return False
+
+        super().setup(sensor_config)
+
+        self.logger.debug('setup completed')
+        return True
+
+    def get_value(self):
+        return randrange(0, 10)

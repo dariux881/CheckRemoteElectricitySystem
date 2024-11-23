@@ -23,5 +23,5 @@ class Sensor:
         self.id = sensor_config[globals.sensor_id_key]
         self.circuit = sensor_config[globals.circuit_key]
 
-    def check_power(self):
+    def get_value(self):
         pass

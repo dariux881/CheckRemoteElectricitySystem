@@ -1,6 +1,6 @@
 import logging
 #from Sensors.AmperometerSensor import AmperometerSensor
-from Sensors.SensorMock import SensorMock
+from Sensors.SensorMock import SensorMock, SensorMockNumber
 
 
 class SensorFactory:
@@ -16,13 +16,20 @@ class SensorFactory:
                     return None
                 return instance
             
-            case 'mock':
+            case 'mock_bool':
                 self.logger.info('Creating Mocked sensor')
                 instance = SensorMock()
                 if not instance.setup(sensor_config):
                     return None
                 return instance
-            
+
+            case 'mock_number':
+                self.logger.info('Creating Mocked sensor for number results')
+                instance = SensorMockNumber()
+                if not instance.setup(sensor_config):
+                    return None
+                return instance
+
             case _:
                 self.logger.warning('sensor type: ' + sensor_type + ' is not supported')
                 return None 

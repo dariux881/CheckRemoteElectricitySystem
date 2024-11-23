@@ -3,7 +3,7 @@ import logging
 import logging.config
 from Sensors.SensorFactory import SensorFactory
 
-supported_sensor_types = ['amperometer', 'mock']
+supported_sensor_types = ['amperometer', 'mock_bool', 'mock_number']
 
 
 class SensorManager:
@@ -38,7 +38,6 @@ class SensorManager:
 
     @staticmethod
     def check_sensor_config(sensor_config):
-        found_circuits = []
         found_pins = []
         found_ids = []
 
@@ -50,12 +49,6 @@ class SensorManager:
             if sConfig.get(globals.circuit_key) is None:
                 raise Exception(globals.circuit_key + ' missing')
 
-            circuit = sConfig.get(globals.circuit_key)
-            if circuit in found_circuits:
-                raise Exception('circuit ' + circuit + ' is already defined')
-
-            found_circuits.append(circuit)
-
             sensor_type = sConfig.get(globals.sensor_type_key)
             if sensor_type not in supported_sensor_types:
                 raise Exception('sensor type ' + sensor_type + ' is not supported')
@@ -66,10 +59,10 @@ class SensorManager:
 
             found_ids.append(sensor_id)
 
-    def check_power(self, sensor_id):
+    def get_value(self, sensor_id):
         if sensor_id not in self.sensorMap:
             print('Invalid sensor with ID ' + sensor_id)
             return False
 
         sensor = self.sensorMap[sensor_id]
-        return sensor.check_power()
+        return sensor.get_value()

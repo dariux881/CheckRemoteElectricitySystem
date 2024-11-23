@@ -45,7 +45,7 @@ class AmperometerSensor(Sensor):
         value = self.adc.read_adc(0, gain=sensor_gain)
         return value
 
-    def check_power(self):
+    def get_value(self):
         # Controlla se la corrente è presente
         current_value = self.read_current(self.gain)
         if current_value > self.threshold:
