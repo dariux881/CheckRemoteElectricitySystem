@@ -1,19 +1,29 @@
+import json
+import logging
 import requests
+import globals
+
 
 class CommunicationManager:
-    def sendData(self, status, device_id, api_key, url):
-        # Invia lo status al server tramite API
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.token = None
+
+    def send_data(self, values, device_id, api_key, url):
+        # Sends status to server
         payload = {
-            'api_key': api_key,
-            'device': device_id,
-            'status': status
+            globals.api_key_key: api_key,
+            globals.device_result_key: device_id,
+            globals.values_result_key: values
         }
+
+        self.logger.debug("Sending data:\n" + json.dumps(payload))
 
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
-                print("Dati inviati correttamente.")
+                self.logger.info("Data correctly sent")
             else:
-                print("Errore nell'invio dei dati:", response.status_code)
+                self.logger.error("Error in sending data: ", response.status_code, str(response.content))
         except Exception as e:
-            print("Errore nella connessione:", e)
+            self.logger.exception(e)
