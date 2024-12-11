@@ -44,14 +44,14 @@ def main():
 
         logger.info('checking power from sensors')
         for sensor in sensors:
-            single_value = sensor_manager.get_value(sensor.id)
+            single_value = sensor_manager.get_value(sensor.name)
 
             if single_value is not None:
-                logger.debug("value received from sensor " + sensor.id)
+                logger.debug("value received from sensor " + sensor.name)
             else:
-                logger.warning("Invalid value received from sensor " + sensor.id)
+                logger.warning("Invalid value received from sensor " + sensor.name)
 
-            single_result = {globals.sensor_result_key: sensor.id, globals.value_result_key: single_value}
+            single_result = {globals.sensor_result_key: sensor.name, globals.value_result_key: single_value}
             total_result.append(single_result)
 
         try:

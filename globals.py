@@ -13,7 +13,7 @@ remote_send_status_url_key = 'send-read-url'
 api_key_key = 'api-key'
 
 # Sensor configuration Globals
-sensor_id_key = 'sensor-id'
+sensor_name_key = 'sensor-name'
 sensor_type_key = 'sensor-type'
 pin_key = 'pin'
 circuit_key = 'circuit'
@@ -23,6 +23,6 @@ sensor_gain_key = 'gain'
 # Remote communication globals
 device_result_key = 'device-id'
 circuit_result_key = 'circuit-id'
-sensor_result_key = 'sensor-id'
+sensor_result_key = 'sensor-name'
 values_result_key = 'values'
 value_result_key = 'value'

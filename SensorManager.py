@@ -30,20 +30,20 @@ class SensorManager:
             if sensor is None:
                 self.logger.error('invalid sensor. Not created')
                 raise Exception(
-                    'failed in creating sensor ' + sensor_type + ' for id ' + sConfig.get(globals.sensor_id_key))
+                    'failed in creating sensor ' + sensor_type + ' for name ' + sConfig.get(globals.sensor_name_key))
 
-            self.sensorMap[sensor.id] = sensor
+            self.sensorMap[sensor.name] = sensor
 
         return self.sensorMap.values()
 
     @staticmethod
     def check_sensor_config(sensor_config):
         found_pins = []
-        found_ids = []
+        found_names = []
 
         for sConfig in sensor_config:
-            if sConfig.get(globals.sensor_id_key) is None:
-                raise Exception(globals.sensor_id_key + ' missing')
+            if sConfig.get(globals.sensor_name_key) is None:
+                raise Exception(globals.sensor_name_key + ' missing')
             if sConfig.get(globals.sensor_type_key) is None:
                 raise Exception(globals.sensor_type_key + ' missing')
             if sConfig.get(globals.circuit_key) is None:
@@ -53,16 +53,16 @@ class SensorManager:
             if sensor_type not in supported_sensor_types:
                 raise Exception('sensor type ' + sensor_type + ' is not supported')
 
-            sensor_id = sConfig.get(globals.sensor_id_key)
-            if sensor_id in found_ids:
-                raise Exception('id ' + sensor_id + ' is already defined')
+            sensor_name = sConfig.get(globals.sensor_name_key)
+            if sensor_name in found_names:
+                raise Exception('name ' + sensor_name + ' is already defined')
 
-            found_ids.append(sensor_id)
+            found_names.append(sensor_name)
 
-    def get_value(self, sensor_id):
-        if sensor_id not in self.sensorMap:
-            print('Invalid sensor with ID ' + sensor_id)
+    def get_value(self, sensor_name):
+        if sensor_name not in self.sensorMap:
+            print('Invalid sensor with name ' + sensor_name)
             return False
 
-        sensor = self.sensorMap[sensor_id]
+        sensor = self.sensorMap[sensor_name]
         return sensor.get_value()
