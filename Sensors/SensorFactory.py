@@ -1,6 +1,7 @@
 import logging
 #from Sensors.AmperometerSensor import AmperometerSensor
 from Sensors.SensorMock import SensorMock, SensorMockNumber
+from Sensors.DHT11Sensor import DHT11Sensor
 
 
 class SensorFactory:
@@ -27,6 +28,14 @@ class SensorFactory:
                 self.logger.info('Creating Mocked sensor for number results')
                 instance = SensorMockNumber()
                 if not instance.setup(sensor_config):
+                    return None
+                return instance
+
+            case 'dht11-temperature':
+                self.logger.info('Creating DHT11 for temperature')
+                instance = DHT11Sensor()
+                if not instance.setup(sensor_config):
+                    self.logger.error('setup DHT11Sensor failed')
                     return None
                 return instance
 

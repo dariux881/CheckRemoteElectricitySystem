@@ -3,7 +3,12 @@ import logging
 import logging.config
 from Sensors.SensorFactory import SensorFactory
 
-supported_sensor_types = ['amperometer', 'mock_bool', 'mock_number']
+supported_sensor_types = [
+    'amperometer', 
+    'mock_bool', 
+    'mock_number',
+    'dht11-temperature',
+    'dht11-humidity']
 
 
 class SensorManager:
@@ -30,7 +35,7 @@ class SensorManager:
             if sensor is None:
                 self.logger.error('invalid sensor. Not created')
                 raise Exception(
-                    'failed in creating sensor ' + sensor_type + ' for name ' + sConfig.get(globals.sensor_name_key))
+                    'failed in creating sensor \"' + sensor_type + '\" for \"' + sConfig.get(globals.sensor_name_key) + '\"')
 
             self.sensorMap[sensor.name] = sensor
 

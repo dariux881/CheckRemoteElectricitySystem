@@ -42,7 +42,7 @@ def main():
     while True:
         total_result = []
 
-        logger.info('checking power from sensors')
+        logger.info('getting data from sensors')
         for sensor in sensors:
             single_value = sensor_manager.get_value(sensor.name)
 
