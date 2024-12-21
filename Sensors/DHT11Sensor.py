@@ -37,13 +37,25 @@ class DHT11Sensor(Sensor):
         return super().setup(sensor_config)
 
     def read_value(self):
+        pass
+
+    def get_value(self):
+        return self.read_value()
+
+class DHT11Temperature(DHT11Sensor):
+    def read_value(self):
         try:
             result = self.sensor.read()
-            self.logger.debug('temperature: ' + str(result.temperature) + '°C humidity:' + str(result.humidity) + '%')
             return result.temperature
         except Exception as e:
             self.logger.exception(e)
             return None
 
-    def get_value(self):
-        return self.read_value()
+class DHT11Humidity(DHT11Sensor):
+    def read_value(self):
+        try:
+            result = self.sensor.read()
+            return result.humidity
+        except Exception as e:
+            self.logger.exception(e)
+            return None
