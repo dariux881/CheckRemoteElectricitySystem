@@ -33,8 +33,8 @@ class DHT11Sensor(Sensor):
         pin = sensor_config.get(globals.pin_key)
         self.logger.info('selected pin: ' + str(pin))
 
-        if any(sensor.pin == pin for sensor in DHT11Sensor.Sensors):
-            self.sensor = next((sensor.instance for sensor in DHT11Sensor.Sensors if sensor.pin == pin), None)
+        if any(sensor['pin'] == pin for sensor in DHT11Sensor.Sensors):
+            self.sensor = next((sensor['instance'] for sensor in DHT11Sensor.Sensors if sensor['pin'] == pin), None)
         else:
             self.sensor = dht11.DHT11(pin=pin)
             DHT11Sensor.Sensors.append({'pin': pin, 'instance': self.sensor})
