@@ -1,7 +1,7 @@
 import logging
 #from Sensors.AmperometerSensor import AmperometerSensor
 from Sensors.SensorMock import SensorMock, SensorMockNumber
-from Sensors.DHT11Sensor import DHT11Sensor
+from Sensors.DHT11Sensor import DHT11Temperature, DHT11Humidity
 
 
 class SensorFactory:
@@ -33,7 +33,15 @@ class SensorFactory:
 
             case 'dht11-temperature':
                 self.logger.info('Creating DHT11 for temperature')
-                instance = DHT11Sensor()
+                instance = DHT11Temperature()
+                if not instance.setup(sensor_config):
+                    self.logger.error('setup DHT11Sensor failed')
+                    return None
+                return instance
+
+            case 'dht11-humidity':
+                self.logger.info('Creating DHT11 for humidity')
+                instance = DHT11Humidity()
                 if not instance.setup(sensor_config):
                     self.logger.error('setup DHT11Sensor failed')
                     return None
