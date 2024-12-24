@@ -60,7 +60,10 @@ class DHT11Temperature(DHT11Sensor):
 
             time.sleep(1)
 
-            return result.temperature
+            if result.error_code == 0:
+                return result.temperature
+            else:
+                return None
         except Exception as e:
             self.logger.exception(e)
             return None
@@ -73,7 +76,10 @@ class DHT11Humidity(DHT11Sensor):
 
             time.sleep(1)
 
-            return result.humidity
+            if result.error_code == 0:
+                return result.humidity
+            else:
+                return None
         except Exception as e:
             self.logger.exception(e)
             return None
