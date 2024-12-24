@@ -13,16 +13,17 @@ supported_sensor_types = [
 
 class SensorManager:
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.sensorMap = dict()
+        self._logger = logging.getLogger(__name__)
+        self.__sensorMap = dict()
 
     def setup(self, sensors_config):
-        self.logger.info('setting up sensors')
+        self._logger.info('setting up sensors')
+        self.__sensorMap.clear()
 
         try:
             self.check_sensor_config(sensors_config)
         except Exception as e:
-            self.logger.exception(e)
+            self._logger.exception(e)
             raise e
 
         s_factory = SensorFactory()
@@ -33,17 +34,16 @@ class SensorManager:
             sensor = s_factory.create(sensor_type, sConfig)
 
             if sensor is None:
-                self.logger.error('invalid sensor. Not created')
+                self._logger.error('invalid sensor. Not created')
                 raise Exception(
                     'failed in creating sensor \"' + sensor_type + '\" for \"' + sConfig.get(globals.sensor_name_key) + '\"')
 
-            self.sensorMap[sensor.name] = sensor
+            self.__sensorMap[sensor.name] = sensor
 
-        return self.sensorMap.values()
+        return self.__sensorMap.values()
 
     @staticmethod
     def check_sensor_config(sensor_config):
-        found_pins = []
         found_names = []
 
         for sConfig in sensor_config:
@@ -65,9 +65,9 @@ class SensorManager:
             found_names.append(sensor_name)
 
     def get_value(self, sensor_name):
-        if sensor_name not in self.sensorMap:
-            print('Invalid sensor with name ' + sensor_name)
+        if sensor_name not in self.__sensorMap:
+            self._logger.error('Invalid sensor with name ' + sensor_name)
             return False
 
-        sensor = self.sensorMap[sensor_name]
+        sensor = self.__sensorMap[sensor_name]
         return sensor.get_value()

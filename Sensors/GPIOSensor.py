@@ -11,9 +11,9 @@ class GPIOSensor(Sensor):
 
         if not GPIOSensor.GPIOInitialized:
             self.logger.info('initializing GPIO')
-            self.initialize_gpio()
+            self.__initialize_gpio()
 
-    def initialize_gpio(self):
+    def __initialize_gpio(self):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.cleanup()

@@ -10,14 +10,19 @@ after_read_time_wait_key = 'time-sleep-seconds-after-read'
 sensor_config_key = 'sensors-config'
 remote_section_key = 'Remote'
 remote_send_status_url_key = 'send-read-url'
+remote_get_device_config_url_key = 'get-device-config-url'
 api_key_key = 'api-key'
 
 # Sensor configuration Globals
-sensor_name_key = 'sensor-name'
-sensor_type_key = 'sensor-type'
+sensor_name_key = 'name'
+sensor_type_key = 'sensor_type'
+circuit_key = 'circuit_number'
 pin_key = 'pin'
-circuit_key = 'circuit'
-sensor_threshold_key = 'value-threshold'
+sensor_params_key = 'params'
+sensor_params_key_key = 'key'
+sensor_params_value_key = 'value'
+
+sensor_threshold_key = 'value_threshold'
 sensor_gain_key = 'gain'
 
 # Remote communication globals
@@ -26,3 +31,6 @@ circuit_result_key = 'circuit-id'
 sensor_result_key = 'sensor-name'
 values_result_key = 'values'
 value_result_key = 'value'
+
+device_placeholder = '<d_id>'
+api_key_placeholder = '<api_key>'

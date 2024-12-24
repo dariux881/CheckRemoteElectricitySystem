@@ -10,15 +10,15 @@ class SensorMock(Sensor):
         super().__init__()
         self.threshold = 0
 
-    def check_sensor_config(self, sensor_config):
+    def _check_sensor_config(self, sensor_config):
         if sensor_config.get(globals.sensor_threshold_key) is None:
             self.logger.error(globals.sensor_threshold_key + ' missing')
             return False
 
-        return super().check_sensor_config(sensor_config)
+        return super()._check_sensor_config(sensor_config)
 
     def setup(self, sensor_config):
-        if not self.check_sensor_config(sensor_config):
+        if not self._check_sensor_config(sensor_config):
             self.logger.error('setup failed')
             return False
 
@@ -37,11 +37,11 @@ class SensorMockNumber(Sensor):
         self.logger = logging.getLogger(__name__)
         super().__init__()
 
-    def check_sensor_config(self, sensor_config):
-        return super().check_sensor_config(sensor_config)
+    def _check_sensor_config(self, sensor_config):
+        return super()._check_sensor_config(sensor_config)
 
     def setup(self, sensor_config):
-        if not self.check_sensor_config(sensor_config):
+        if not self._check_sensor_config(sensor_config):
             self.logger.error('setup failed')
             return False
 

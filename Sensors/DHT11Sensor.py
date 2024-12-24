@@ -12,19 +12,26 @@ class DHT11Sensor(GPIOSensor):
 
         self.sensor = None
 
-    def check_sensor_config(self, sensor_config):
-        if sensor_config.get(globals.pin_key) is None:
+    def _check_sensor_config(self, sensor_config):
+        params = sensor_config.get(globals.sensor_params_key)
+        if params is None:
+            self.logger.error(globals.sensor_params_key + ' missing')
+            return False
+
+        if not any(p['key']=='pin' for p in params):
+            # pin not found
             self.logger.error(globals.pin_key + ' missing')
             return False
 
-        return super().check_sensor_config(sensor_config)
+        return super()._check_sensor_config(sensor_config)
 
     def setup(self, sensor_config):
-        if not self.check_sensor_config(sensor_config):
+        if not self._check_sensor_config(sensor_config):
             self.logger.error('setup failed')
             return False
 
-        pin = sensor_config.get(globals.pin_key)
+        params = sensor_config.get(globals.sensor_params_key)
+        pin = next((p['value'] for p in params if p['key'] == 'pin'), None)
         self.logger.info('selected pin: ' + str(pin))
 
         if self._is_object_defined_with_key(pin):
@@ -32,21 +39,21 @@ class DHT11Sensor(GPIOSensor):
             self.sensor = self._get_object_from_key(pin)
         else:
             self.logger.info('creating sensor for pin ' + str(pin))
-            self.sensor = dht11.DHT11(pin=pin)
+            self.sensor = dht11.DHT11(pin=int(pin))
             self._push_object_for_key(pin, self.sensor)
 
         self.logger.info('created sensor')
 
         return super().setup(sensor_config)
 
-    def read_value(self):
+    def _read_value(self):
         pass
 
     def get_value(self):
-        return self.read_value()
+        return self._read_value()
 
 class DHT11Temperature(DHT11Sensor):
-    def read_value(self):
+    def _read_value(self):
         try:
             result = self.sensor.read()
             self.logger.info('Temp: ' + str(result.temperature) + ' °C\tstatus: ' + str(result.error_code))
@@ -59,7 +66,7 @@ class DHT11Temperature(DHT11Sensor):
             return None
 
 class DHT11Humidity(DHT11Sensor):
-    def read_value(self):
+    def _read_value(self):
         try:
             result = self.sensor.read()
             self.logger.info('Hum: ' + str(result.humidity) + ' %\tstatus ' + str(result.error_code))

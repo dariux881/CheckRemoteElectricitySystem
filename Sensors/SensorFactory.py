@@ -1,7 +1,7 @@
 import logging
 #from Sensors.AmperometerSensor import AmperometerSensor
-from Sensors.SensorMock import SensorMock, SensorMockNumber
 from Sensors.DHT11Sensor import DHT11Temperature, DHT11Humidity
+from Sensors.SensorMock import SensorMock, SensorMockNumber
 
 
 class SensorFactory:

@@ -9,7 +9,7 @@ class Sensor:
         self.name = ""
         self.circuit = 0
 
-    def check_sensor_config(self, sensor_config):
+    def _check_sensor_config(self, sensor_config):
         if sensor_config.get(globals.sensor_name_key) is None:
             self.logger.error(globals.sensor_name_key + ' missing')
             return False

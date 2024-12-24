@@ -13,7 +13,7 @@ class AmperometerSensor(Sensor):
         self.gain = 0
         self.threshold = 0
 
-    def check_sensor_config(self, sensor_config):
+    def _check_sensor_config(self, sensor_config):
         if sensor_config.get(globals.pin_key) is None:
             print(globals.pin_key + ' missing')
             return False
@@ -24,10 +24,10 @@ class AmperometerSensor(Sensor):
             print(globals.sensor_gain_key + ' missing')
             return False
 
-        return super().check_sensor_config(sensor_config)
+        return super()._check_sensor_config(sensor_config)
 
     def setup(self, sensor_config):
-        if not self.check_sensor_config(sensor_config):
+        if not self._check_sensor_config(sensor_config):
             print('setup failed')
             return False
         
